@@ -8,20 +8,20 @@ Content-Type: application/json
 
 
   {
-    "player_name": "Lakshman",
-    "jersey_number": 17,
-    "role": "bowler"
-
-  }
-
-
-  ###
-  GET http://localhost:3000/players/1/
+  "playerName": "Vishal",
+  "jerseyNumber": 17,
+  "role": "Bowler"
+}
 
 ###
-  PUT http://localhost:3000/players/1/
+GET http://localhost:3000/players/1/
 
-  {
+###
+
+PUT http://localhost:3000/players/1/
+Content-Type: application/json
+
+{
   "player_name": "Maneesh",
   "jersey_number": 54,
   "role": "All-rounder"

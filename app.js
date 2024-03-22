@@ -4,7 +4,7 @@ const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const app = express();
-app.use = express.json
+app.use(express.json());
 
 const dbPath = path.join(__dirname, "cricketTeam.db");
 
@@ -41,35 +41,28 @@ app.post("/players/", async (request, response) => {
   const { player_id, player_name, jersey_number, role } = playerDetails;
   const addPlayer = `INSERT INTO cricket_team
     (player_id, player_name, jersey_number, role)
-    VALUES('${player_id}',${player_name},${jersey_number},'${role})';`;
+    VALUES('${player_id}','${player_name}',${jersey_number},'${role})';`;
 
   const result = await db.run(addPlayer);
   response.send("Player Added to Team");
 });
 
-
-app.get("/players/:playerId/", async(request, response) => {
-    const {playerId} = request.params
-    const player = `
+app.get("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
+  const player = `
     SELECT * FROM 
     cricket_team
     WHERE 
-    playerId = ${playerId};`;
-    const play = await db.get(player);
-    response.send(play);
-
+    player_id = ${playerId};`;
+  const play = await db.get(player);
+  response.send(play);
 });
 
-app.put("/players/:playerId/", async(request, response) => {
-    const {playerId} = request.params;
-    const playerDetails = request.body;
-    const{
-        player_id,
-        player_name,
-        jersey_number,
-        role,
-    } = playerDetails;
-    const updatePlayer = `
+app.put("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
+  const playerDetails = request.body;
+  const { player_id, player_name, jersey_number, role } = playerDetails;
+  const updatePlayer = `
     UPDATE cricket_team 
     SET 
   "player_name": '${player_name}',
@@ -80,15 +73,14 @@ app.put("/players/:playerId/", async(request, response) => {
 
   await db.run(updatePlayer);
   response.send("Player Details Updated");
-
-});4
+});
 
 app.delete("/players/:playerId/", async (request, response) => {
-    const {playerId} = request.params;
-    const deletePlayer = 
-    `DELETE FROM cricket_team
+  const { playerId } = request.params;
+  const deletePlayer = `DELETE FROM cricket_team
     WHERE  player_id = ${playerId};`;
-    await db.run(deletePlayer);
-    response.send("Player Removed")
-})
+  await db.run(deletePlayer);
+  response.send("Player Removed");
+});
 
+module.exports = app;
